@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Work — Ata Yağız Edirne</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #000;
+      --white: #fff;
+      --font-display: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+      --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+      --gutter: 22px;
+      --sig-h: clamp(32px, 4.6vw, 58px);
+      --nav-height: calc(var(--gutter) * 2 + var(--sig-h)); /* same height as the other pages */
+    }
+
+    html, body {
+      background: var(--white);
+      color: var(--black);
+      font-family: var(--font-display);
+    }
+
+    /* Nav */
+    nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 200;
+      height: var(--nav-height);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: var(--gutter);
+      background: rgba(255,255,255,0.93);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .sig-img { display: block; height: var(--sig-h); width: auto; }
+
+    .nav-word {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(26px, 3.8vw, 56px);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      line-height: 1;
+      color: var(--black);
+      text-decoration: none;
+    }
+
+    /* Center home link */
+    .nav-home {
+      position: absolute;
+      left: 50%;
+      top: var(--gutter);
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 7px;
+      text-decoration: none;
+      white-space: nowrap;
+      height: clamp(26px, 3.8vw, 56px);
+    }
+
+    .nav-home svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      color: var(--black);
+    }
+
+    .nav-home-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--black);
+      opacity: 0.45;
+      transition: opacity 0.2s;
+    }
+    .nav-home:hover .nav-home-label { opacity: 1; }
+
+    /* Right side links */
+    .nav-links {
+      position: absolute;
+      top: var(--gutter);
+      right: var(--gutter);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 3px;
+      margin-top: clamp(52px, 7vw, 96px);
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--black);
+      text-decoration: none;
+      opacity: 0.45;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+    .nav-links a.active { opacity: 1; }
+
+    /* Work page: one project explained, picture centred in a fixed-size frame */
+    :root {
+      --W: min(1000px, calc((100vw - 104px) * 0.535)); /* horizontal frame: 4:3 (the size of the first Other Works picture) */
+      --H: calc(var(--W) * 0.75);                      /* both frames share this height */
+    }
+
+    main { padding-top: var(--nav-height); }
+
+    .work-crumb {
+      display: inline-block;
+      padding: 20px var(--gutter) 14px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--black);
+      text-decoration: none;
+      opacity: 0.35;
+      transition: opacity 0.2s;
+    }
+    .work-crumb:hover, .work-crumb:focus { opacity: 1; outline: none; }
+
+    .work {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 56px;
+      padding: 24px var(--gutter) 80px;
+    }
+
+    /* works shown as portfolio pages: the hero picture is a bit bigger than the framed one (about 80% of the page width) */
+    .work-hero { width: 100%; display: flex; justify-content: center; padding: 24px var(--gutter) 0; }
+    .work-hero .work-frame.work-frame--wide { display: block; width: min(1400px, calc((100vw - 104px) * 0.8)); height: auto; margin: 0; }
+    .work-hero .work-frame--wide img {
+      display: block;
+      width: 100%;
+      max-width: none;
+      height: auto;
+      max-height: calc(100vh - var(--nav-height) - 80px);
+      object-fit: contain;   /* the whole picture is always shown, never cropped */
+    }
+
+    .work-main--wide { width: 100%; max-width: 720px; }
+    .work-main--wide .work-info { width: auto; min-width: 0; }
+
+    .work-main { display: flex; flex-direction: column; width: fit-content; max-width: 100%; }
+
+    /* two frame sizes: horizontal and vertical; pictures that do not fill them leave empty space */
+    .work-frame { position: relative; display: flex; align-items: center; justify-content: center; margin: 0 auto; }
+    .work-frame--h { width: var(--W); height: var(--H); }
+    .work-frame--v { width: calc(var(--H) * 0.8); height: var(--H); }
+    .work-frame img,
+    .work-frame video { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
+
+    /* arrows + counter when a work has more than one picture / video */
+    .work-arrow {
+      position: absolute;
+      top: 50%;
+      z-index: 2;
+      width: 46px;
+      height: 46px;
+      margin-top: -23px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.92);
+      color: var(--black);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .work-arrow:hover { background: var(--black); color: var(--white); }
+    .work-arrow svg { width: 20px; height: 20px; }
+    .work-arrow--prev { left: 12px; }
+    .work-arrow--next { right: 12px; }
+
+    .work-count {
+      position: absolute;
+      left: 0; right: 0;
+      bottom: -22px;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      opacity: 0.45;
+    }
+    .work-frame--ph { background: #e8e8e8; }
+    .work-frame--ph img { display: none; }
+
+    /* text sits under the picture, as wide as the frame */
+    .work-info { width: 0; min-width: 100%; margin-top: 28px; }
+
+    /* text under the picture: centred, everything in small caps (first letters too) */
+    .work-head { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+
+    .work-name {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(32px, 4.2vw, 64px);
+      letter-spacing: 0.06em;
+      font-variant-caps: all-small-caps;
+      text-transform: none;
+      line-height: 1;
+    }
+
+    .work-category {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      font-variant-caps: all-small-caps;
+      text-transform: none;
+      text-align: center;
+      opacity: 0.55;
+    }
+
+    .work-category:empty { display: none; }
+
+    .work-body { margin: 28px auto 0; max-width: 620px; text-align: center; }
+    .work-body p {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      font-variant-caps: all-small-caps;
+      text-transform: none;
+      line-height: 1.9;
+    }
+    .work-body p + p { margin-top: 1.1em; }
+
+    /* written explanation: titled sections, centred, small caps */
+    .work-sec { margin-top: 44px; }
+    .work-sec-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      font-variant-caps: all-small-caps;
+      text-transform: none;
+      opacity: 0.55;
+      margin-bottom: 14px;
+    }
+    .work-sec p { white-space: pre-line; }
+
+    /* project story: every text sits right next to the pictures that belong to it.
+       Pictures keep their width relative to the portfolio slide (--slide = a whole slide), colours untouched. */
+    .story {
+      --slide: min(1000px, calc(100vw - 2 * var(--gutter) - 24px));
+      width: 100%;
+      max-width: 1060px;
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
+      padding-top: 20px;
+    }
+
+    .srow-heading {
+      margin-bottom: 26px;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(26px, 2.6vw, 38px);
+      letter-spacing: 0.06em;
+      font-variant-caps: all-small-caps;
+      text-transform: none;
+      line-height: 1;
+    }
+
+    /* text and its pictures form one compact block, centred on the page */
+    .srow { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, auto); justify-content: center; column-gap: 40px; align-items: start; }
+    .srow--flip { grid-template-columns: minmax(0, auto) minmax(0, 380px); }
+    .srow--flip .sp-text-col { order: 2; }
+    .srow--flip .sp-media { justify-content: flex-end; }
+    .srow--texts { grid-template-columns: repeat(var(--n, 1), minmax(0, 1fr)); justify-content: stretch; }
+    .srow--text-one { display: block; max-width: 620px; margin: 0 auto; }
+    .srow--pics { display: block; }
+    .srow--pics .sp-media { justify-content: center; }
+    .srow--stack { display: block; }
+    .srow--stack .sp-media { flex-direction: column; align-items: center; margin-bottom: 36px; }
+    .srow--stack .sp-text-col { max-width: 720px; margin: 0 auto; }
+
+    .sp-text-col { display: flex; flex-direction: column; gap: 30px; min-width: 0; }
+    .sp-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      font-variant-caps: all-small-caps;
+      text-transform: none;
+      opacity: 0.6;
+      margin-bottom: 12px;
+    }
+    .sp-text p {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      line-height: 1.9;
+      font-variant-caps: all-small-caps;
+      text-transform: none;
+      text-align: left;
+      white-space: pre-line;
+    }
+    .sp-text p + p { margin-top: 1.1em; }
+
+    .sp-media { display: flex; flex-wrap: wrap; justify-content: flex-start; align-items: flex-start; gap: 20px; min-width: 0; }
+    .sp-media img { display: block; flex: 0 1 auto; max-width: 100%; height: auto; }
+
+    .sp-caption {
+      margin-top: 12px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      font-variant-caps: all-small-caps;
+      text-transform: none;
+      text-align: center;
+      opacity: 0.6;
+    }
+
+    /* the portfolio pages, one under the other in scroll order */
+    /* full width of the window: cancel the page's side padding so the slides run from the left edge to the right edge */
+    .pages { width: calc(100% + 2 * var(--gutter)); max-width: none; display: flex; flex-direction: column; gap: 0; padding-top: 20px; }
+    .pages img { display: block; width: 100%; height: auto; }
+    .pages { gap: var(--pages-gap, 0px); }
+    .pages-row { display: flex; gap: var(--pages-gap, 0px); }
+    .pages-row img { flex: 1 1 0; min-width: 0; width: 0; }
+    .pages-fig { margin: 0; flex: 1 1 0; min-width: 0; }
+    /* same shape for every captioned photo (3:2), so each name sits the same distance below its picture */
+    .pages-fig img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+    .pages-fig figcaption {
+      padding: 10px var(--gutter) 22px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      font-variant-caps: all-small-caps;
+      text-transform: none;
+      text-align: right;
+    }
+
+    .work-pager-wrap { width: 100%; max-width: 1060px; }
+    .work-pager-wrap--narrow { max-width: var(--W); }
+
+    .work-pager {
+      margin-top: 40px;
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+    .work-pager a { color: var(--black); text-decoration: none; opacity: 0.45; transition: opacity 0.2s; }
+    .work-pager a:hover { opacity: 1; }
+    .work-pager .next { margin-left: auto; }
+
+    @media (max-width: 860px) {
+      :root { --W: calc(100vw - 2 * var(--gutter)); }
+      .srow, .srow--texts { grid-template-columns: 1fr; row-gap: 28px; }
+      .srow--flip .sp-text-col { order: 0; }
+      .srow--flip .sp-media { justify-content: flex-start; }
+      .work-frame--v { width: var(--W); height: calc(var(--W) * 1.25); }
+    }
+    @media (max-width: 560px)  { :root { --gutter: 14px; } }
+  
+    /* phones: the links move into the top bar (second row), the centre button is hidden (the Works link and back link do its job) */
+    @media (max-width: 600px) {
+      :root { --gutter: 14px; --nav-height: calc(var(--gutter) * 2 + var(--sig-h) + 24px); }
+      nav { flex-wrap: wrap; align-content: flex-start; }
+      .nav-home { display: none; }
+      .nav-links { position: static; width: 100%; margin: 10px 0 0; flex-direction: row; justify-content: flex-end; gap: 18px; }
+    }
+  </style>
+  <link rel="preload" as="image" href="images/signature-ata.png" />
+  <link rel="preload" as="image" href="images/signature-yagiz-edirne.png" />
+</head>
+<body>
+
+  <nav>
+    <span class="nav-word" id="nav-left"><img class="sig-img" src="images/signature-ata.png" width="291" height="179" alt="Ata"></span>
+
+    <a class="nav-home" id="nav-projects" href="project.html?p=0">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+        <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+      </svg>
+      <span class="nav-home-label">Works</span>
+    </a>
+
+    <span class="nav-word" id="nav-right"><img class="sig-img" src="images/signature-yagiz-edirne.png" width="1022" height="179" alt="Yağız Edirne"></span>
+
+    <div class="nav-links">
+      <a href="index.html#projects" class="active">Works</a>
+      <a href="contact.html">Contact</a>
+      <a href="cv.html">CV</a>
+    </div>
+  </nav>
+
+  <main>
+    <a class="work-crumb" id="work-crumb" href="index.html#projects"></a>
+
+    <div class="work-hero" id="work-hero"></div>
+
+    <section class="work" id="work">
+      <div class="work-main">
+        <div class="work-frame work-frame--h" id="work-frame"></div>
+        <div class="work-info">
+          <div class="work-head">
+            <h1 class="work-name" id="work-name"></h1>
+            <p class="work-category" id="work-category"></p>
+          </div>
+          <div class="work-body" id="work-body"></div>
+        </div>
+      </div>
+      <div class="pages" id="pages" hidden></div>
+      <div class="story" id="story" hidden></div>
+      <div class="work-pager-wrap" id="work-pager-wrap"><div class="work-pager" id="work-pager"></div></div>
+    </section>
+  </main>
+
+  <script src="config.js"></script>
+  <script>
+  (function () {
+    const q = new URLSearchParams(location.search);
+    const pi = parseInt(q.get('p'), 10), ii = parseInt(q.get('i'), 10);
+    const proj = CONFIG.projects[pi];
+    const item = proj && (proj.gallery || [])[ii];
+    if (!proj || !item) { location.replace('index.html#projects'); return; }
+
+    const name = item.label || proj.title;
+    document.title = name + ' — Ata Yağız Edirne';
+
+    // back to the project's overview page
+    const crumb = document.getElementById('work-crumb');
+    crumb.href = 'project.html?p=' + pi;
+    document.getElementById('nav-projects').href = 'project.html?p=' + pi;
+    crumb.textContent = '← ' + proj.title;
+
+    // pictures and videos: shown in full inside a fixed frame (horizontal or vertical, by the shape of the current one).
+    // item.media lists them in order (a path ending in .mp4 / .webm / .mov is a video);
+    // without it the work shows item.image followed by item.images.
+    const frame = document.getElementById('work-frame');
+    const media = (item.media || [item.image].concat(item.images || [])).filter(Boolean);
+    // works laid out as portfolio pages get a full-width hero picture above the text
+    if (item.pages && item.pages.length) {
+      frame.classList.remove('work-frame--h');
+      frame.classList.add('work-frame--wide');
+      document.getElementById('work-hero').appendChild(frame);
+      document.querySelector('.work-main').classList.add('work-main--wide');
+    }
+    const isVideo = function (src) { return /\.(mp4|webm|mov|m4v)$/i.test(src); };
+    let current = 0;
+
+    function setShape(w, h) {
+      if (frame.classList.contains('work-frame--wide')) return;
+      frame.classList.toggle('work-frame--v', h > w);
+      frame.classList.toggle('work-frame--h', !(h > w));
+    }
+
+    function show(n) {
+      current = (n + media.length) % media.length;
+      Array.prototype.slice.call(frame.querySelectorAll('img, video')).forEach(function (el) { el.remove(); });
+      const src = media[current];
+      if (!src) { frame.classList.add('work-frame--ph'); return; }
+      let el;
+      if (isVideo(src)) {
+        el = document.createElement('video');
+        el.muted = true; el.defaultMuted = true; el.loop = true; el.autoplay = true; el.playsInline = true;
+        el.setAttribute('muted', ''); el.setAttribute('playsinline', '');
+        el.addEventListener('loadedmetadata', function () { setShape(el.videoWidth, el.videoHeight); });
+        el.src = src;
+        frame.insertBefore(el, frame.firstChild);
+        const p = el.play(); if (p && p.catch) p.catch(function () {});
+      } else {
+        el = new Image();
+        el.alt = name;
+        el.onload = function () { setShape(el.naturalWidth, el.naturalHeight); };
+        el.src = src;
+        frame.insertBefore(el, frame.firstChild);
+      }
+      const count = frame.querySelector('.work-count');
+      if (count) count.textContent = (current + 1) + ' / ' + media.length;
+    }
+
+    if (media.length > 1) {
+      const arrow = function (dir) {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'work-arrow work-arrow--' + (dir < 0 ? 'prev' : 'next');
+        b.setAttribute('aria-label', dir < 0 ? 'Previous' : 'Next');
+        b.innerHTML = dir < 0
+          ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="11 6 5 12 11 18"/></svg>'
+          : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="13 6 19 12 13 18"/></svg>';
+        b.addEventListener('click', function () { show(current + dir); });
+        return b;
+      };
+      frame.appendChild(arrow(-1));
+      frame.appendChild(arrow(1));
+      const count = document.createElement('div');
+      count.className = 'work-count';
+      frame.appendChild(count);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowLeft') show(current - 1);
+        else if (e.key === 'ArrowRight') show(current + 1);
+      });
+    }
+    show(0);
+
+    // text: name, category, explanation (details = longer text, otherwise the short description)
+    document.getElementById('work-name').textContent = name;
+    document.getElementById('work-category').textContent = [item.category, item.duration].filter(Boolean).join(', ');
+    const body = document.getElementById('work-body');
+    if (item.sections && item.sections.length) {
+      // titled sections of the written explanation (blank lines inside a text start a new paragraph)
+      item.sections.forEach(function (s) {
+        const box = document.createElement('div');
+        box.className = 'work-sec';
+        const h = document.createElement('h2');
+        h.className = 'work-sec-title';
+        h.textContent = s.title;
+        box.appendChild(h);
+        String(s.text).split(/\n\n+/).forEach(function (t) {
+          const p = document.createElement('p');
+          p.textContent = t;
+          box.appendChild(p);
+        });
+        body.appendChild(box);
+      });
+    } else {
+      [].concat(item.details || []).forEach(function (t) { // the short `description` is not shown
+        const p = document.createElement('p');
+        p.textContent = t;
+        body.appendChild(p);
+      });
+    }
+
+    // the project story: each spread becomes a section with its text beside its pictures
+    function textBlock(b) {
+      const box = document.createElement('div');
+      box.className = 'sp-text';
+      if (b.title) {
+        const h = document.createElement('h3');
+        h.className = 'sp-title';
+        h.textContent = b.title;
+        box.appendChild(h);
+      }
+      String(b.text || '').split(/\n\n+/).filter(Boolean).forEach(function (t) {
+        const p = document.createElement('p');
+        p.textContent = t;
+        box.appendChild(p);
+      });
+      return box;
+    }
+    function pictures(blocks) {
+      const media = document.createElement('div');
+      media.className = 'sp-media';
+      blocks.forEach(function (b) {
+        const img = document.createElement('img');
+        img.src = b.image;
+        img.alt = name;
+        img.loading = 'lazy';
+        if (b.w) img.style.width = 'calc(var(--slide) * ' + (b.w / 900) + ')';
+        media.appendChild(img);
+      });
+      return media;
+    }
+    if (item.pages && item.pages.length) {
+      const pagesBox = document.getElementById('pages');
+      pagesBox.hidden = false;
+      if (item.pagesGap) pagesBox.style.setProperty('--pages-gap', item.pagesGap + 'px');
+      // an entry is a picture, or a list of pictures that sit side by side in one row;
+      // a picture is a path, or { src, caption } to write a caption beneath it
+      item.pages.forEach(function (entry, n) {
+        const pics = [].concat(entry);
+        let holder = pagesBox;
+        if (pics.length > 1) {
+          holder = document.createElement('div');
+          holder.className = 'pages-row';
+          pagesBox.appendChild(holder);
+        }
+        pics.forEach(function (p) {
+          const src = typeof p === 'string' ? p : p.src;
+          const img = document.createElement('img');
+          img.src = src;
+          img.alt = (typeof p === 'object' && p.caption) || (name + ', picture ' + (n + 1));
+          if (n > 0) img.loading = 'lazy';
+          if (typeof p === 'object' && p.caption) {
+            const fig = document.createElement('figure');
+            fig.className = 'pages-fig';
+            fig.appendChild(img);
+            const cap = document.createElement('figcaption');
+            cap.textContent = p.caption;
+            fig.appendChild(cap);
+            holder.appendChild(fig);
+          } else {
+            holder.appendChild(img);
+          }
+        });
+      });
+    } else if (item.story && item.story.length) {
+      const holder = document.getElementById('story');
+      holder.hidden = false;
+      let flip = false;
+      item.story.forEach(function (r) {
+        const texts = r.texts || [], pics = r.images || [];
+        const wrap = document.createElement('div');
+        if (r.heading) {
+          const h = document.createElement('h2');
+          h.className = 'srow-heading';
+          h.textContent = r.heading;
+          wrap.appendChild(h);
+        }
+        const row = document.createElement('div');
+        if (texts.length && pics.length) {
+          row.className = 'srow' + (r.stack ? ' srow--stack' : '');
+          const col = document.createElement('div');
+          col.className = 'sp-text-col';
+          texts.forEach(function (b) { col.appendChild(textBlock(b)); });
+          if (r.stack) {
+            row.appendChild(pictures(pics));
+            row.appendChild(col);
+          } else {
+            if (flip) row.classList.add('srow--flip');
+            flip = !flip; // text and pictures swap sides from one row to the next
+            row.appendChild(col);
+            row.appendChild(pictures(pics));
+          }
+        } else if (texts.length) {
+          row.className = 'srow srow--texts' + (texts.length === 1 ? ' srow--text-one' : '');
+          row.style.setProperty('--n', Math.min(texts.length, 2));
+          texts.forEach(function (b) {
+            const col = document.createElement('div');
+            col.className = 'sp-text-col';
+            col.appendChild(textBlock(b));
+            row.appendChild(col);
+          });
+        } else {
+          row.className = 'srow srow--pics';
+          row.appendChild(pictures(pics));
+        }
+        wrap.appendChild(row);
+        if (r.caption) {
+          const cap = document.createElement('div');
+          cap.className = 'sp-caption';
+          cap.textContent = r.caption;
+          wrap.appendChild(cap);
+        }
+        holder.appendChild(wrap);
+      });
+    } else {
+      document.getElementById('work-pager-wrap').classList.add('work-pager-wrap--narrow');
+    }
+
+    // previous / next work in the same project
+    const pager = document.getElementById('work-pager');
+    const g = proj.gallery;
+    [[ii - 1, '← Previous'], [ii + 1, 'Next →']].forEach(function (pair) {
+      if (pair[0] < 0 || pair[0] >= g.length) return;
+      const a = document.createElement('a');
+      a.href = 'work.html?p=' + pi + '&i=' + pair[0];
+      a.textContent = pair[1];
+      if (pair[0] > ii) a.className = 'next';
+      pager.appendChild(a);
+    });
+  })();
+  </script>
+
+  <script>
+  (function () {
+    const contactLink = document.querySelector('a[href="contact.html"]');
+
+    if (contactLink) {
+      
+      contactLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        const href = this.href;
+        const rightEl = document.getElementById('nav-right');
+        const leftEl  = document.getElementById('nav-left');
+        const rightRect = rightEl.getBoundingClientRect();
+        const leftRect  = leftEl.getBoundingClientRect();
+        const leftImg = leftEl.querySelector('img');
+        const sigH = leftImg ? leftImg.getBoundingClientRect().height : leftRect.height;
+        const ataRatio = (leftImg && leftImg.naturalWidth) ? leftImg.naturalWidth / leftImg.naturalHeight : 291 / 179;
+        // where the name sits on the contact page: after the "Ata" image plus the gap used there (0.25 × image height)
+        const targetLeft = leftRect.left + sigH * ataRatio + sigH * 0.25;
+        const targetTop  = leftRect.top;
+
+        const clone = rightEl.cloneNode(true);
+        clone.style.cssText = [
+          'position:fixed',
+          'top:' + rightRect.top + 'px',
+          'left:' + rightRect.left + 'px',
+          'margin:0',
+          'z-index:9999',
+          'pointer-events:none',
+          'transition:left 0.8s cubic-bezier(0.77,0,0.18,1), top 0.8s cubic-bezier(0.77,0,0.18,1)',
+          'font-family:var(--font-display)',
+          'font-weight:900',
+          'font-size:' + getComputedStyle(rightEl).fontSize,
+          'letter-spacing:' + getComputedStyle(rightEl).letterSpacing,
+          'text-transform:uppercase',
+          'line-height:1',
+          'white-space:nowrap'
+        ].join(';');
+        document.body.appendChild(clone);
+      clone.getBoundingClientRect(); // commit the start position so the transition always runs
+        rightEl.style.visibility = 'hidden';
+
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          clone.style.left = targetLeft + 'px';
+          clone.style.top  = targetTop  + 'px';
+        }));
+
+        setTimeout(() => { window.location.href = href; }, 780);
+      });
+    }
+  })();
+  </script>
+</body>
+</html>

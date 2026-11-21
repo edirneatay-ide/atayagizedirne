@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Les Garçons Sauvages</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preload" as="image" href="images/signature-ata.png" />
+  <link rel="preload" as="image" href="images/signature-yagiz-edirne.png" />
+</head>
+<body>
+
+  <!-- ─── Navigation ─── -->
+  <nav>
+    <span class="nav-word" id="nav-left"></span>
+    <span class="nav-word nav-word--right" id="nav-right"></span>
+    <div class="nav-links">
+      <a href="#projects">Works</a>
+      <a href="contact.html">Contact</a>
+      <a href="cv.html">CV</a>
+    </div>
+  </nav>
+
+  <!-- ─── Hero ─── -->
+  <section class="hero" id="hero">
+
+    <!-- Taglines: above image, z-index high -->
+    <div class="hero-taglines" id="hero-taglines"></div>
+
+    <!-- First 2 headline lines sit above image -->
+    <div class="hero-headlines-above" id="hero-headlines-above"></div>
+
+    <!-- Hero image layer -->
+    <div class="hero-image-wrap" id="hero-image-wrap">
+      <img id="hero-img" src="" alt="" />
+<div class="hero-credits" id="hero-credits"></div>
+    </div>
+
+    <!-- Last headline line ghosts over image -->
+    <div class="hero-headlines-over" id="hero-headlines-over"></div>
+
+    <!-- SAUVAGES stamp at bottom -->
+    <div class="hero-stamp" id="hero-stamp"></div>
+
+  </section>
+
+  <!-- ─── Projects ─── -->
+  <section class="projects" id="projects">
+    <div class="book">
+      <img src="images/sketchbook.jpg" width="1720" height="1265" alt="Sketchbook spread with sketches of my work" />
+      <a class="book-link" id="book-link" href="project.html?p=0"><span id="book-link-title">Works</span></a>
+    </div>
+  </section>
+
+  <!-- ─── About ─── -->
+  <section class="about" id="about">
+    <div class="about-left fade-in">
+      <p class="about-label">About</p>
+      <div class="about-figure" id="about-figure">
+        <div class="about-photo" id="about-photo"></div>
+      </div>
+    </div>
+    <div class="about-right fade-in">
+      <div class="about-credits-block" id="about-credits"></div>
+    </div>
+  </section>
+
+  <!-- ─── Footer ─── -->
+  <footer>
+    <div class="footer-name" id="footer-name"></div>
+    <div class="footer-meta" id="footer-meta"></div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

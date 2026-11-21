@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CV — Ata Yağız Edirne</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #000;
+      --white: #fff;
+      --font-display: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+      --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+      --gutter: 22px;
+      --nav-height: calc(var(--gutter) * 2 + var(--sig-h)); /* same height as the home page bar */
+      --sig-h: clamp(32px, 4.6vw, 58px);
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: var(--white);
+      color: var(--black);
+      font-family: var(--font-display);
+    }
+
+    /* Nav */
+    nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 200;
+      height: var(--nav-height);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: var(--gutter);
+      background: rgba(255,255,255,0.93);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .sig-img { display: block; height: var(--sig-h); width: auto; }
+
+    .nav-word {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(26px, 3.8vw, 56px);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      line-height: 1;
+      color: var(--black);
+      text-decoration: none;
+    }
+
+    /* Center home link */
+    .nav-home {
+      position: absolute;
+      left: 50%;
+      top: var(--gutter);
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 7px;
+      text-decoration: none;
+      white-space: nowrap;
+      height: clamp(26px, 3.8vw, 56px);
+    }
+
+    .nav-home svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      color: var(--black);
+    }
+
+    .nav-home-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--black);
+      opacity: 0.45;
+      transition: opacity 0.2s;
+    }
+    .nav-home:hover .nav-home-label { opacity: 1; }
+
+    /* Right side links */
+    .nav-links {
+      position: absolute;
+      top: var(--gutter);
+      right: var(--gutter);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 3px;
+      margin-top: clamp(52px, 7vw, 96px);
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--black);
+      text-decoration: none;
+      opacity: 0.45;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+    .nav-links a.active { opacity: 1; }
+
+    /* PDF fills remaining viewport */
+    .cv-embed-wrap {
+      position: fixed;
+      inset: var(--nav-height) 0 0 0;
+    }
+
+    .cv-embed-wrap embed {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Zoomable viewer (pdf.js) */
+    .cv-scroll {
+      position: absolute;
+      inset: 0;
+      overflow: auto;
+      display: flex;
+      background: var(--white);
+      touch-action: pan-x pan-y;
+    }
+    .cv-scroll canvas {
+      display: block;
+      margin: auto;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
+    }
+
+    .cv-zoom {
+      position: fixed;
+      left: var(--gutter);
+      bottom: var(--gutter);
+      z-index: 150;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.93);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+    .cv-zoom button {
+      font: inherit;
+      letter-spacing: inherit;
+      text-transform: inherit;
+      color: var(--black);
+      background: none;
+      border: 0;
+      padding: 0 2px;
+      cursor: pointer;
+      opacity: 0.45;
+      transition: opacity 0.2s;
+    }
+    .cv-zoom button:hover { opacity: 1; }
+    .cv-zoom .cv-zoom-btn { font-size: 14px; line-height: 1; }
+    .cv-download {
+      position: fixed;
+      right: var(--gutter);
+      bottom: var(--gutter);
+      z-index: 150;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--black);
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.93);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(0,0,0,0.1);
+      transition: background 0.2s, color 0.2s;
+    }
+    .cv-download svg { width: 12px; height: 12px; flex-shrink: 0; }
+    .cv-download:hover { background: var(--black); color: var(--white); }
+    .cv-zoom-level { min-width: 4ch; text-align: center; opacity: 0.45; }
+  
+    /* phones: the links move into the top bar (second row), the centre button is hidden (the Works link and back link do its job) */
+    @media (max-width: 600px) {
+      :root { --gutter: 14px; --nav-height: calc(var(--gutter) * 2 + var(--sig-h) + 24px); }
+      nav { flex-wrap: wrap; align-content: flex-start; }
+      .nav-home { display: none; }
+      .nav-links { position: static; width: 100%; margin: 10px 0 0; flex-direction: row; justify-content: flex-end; gap: 18px; }
+    }
+  </style>
+  <link rel="preload" as="image" href="images/signature-ata.png" />
+  <link rel="preload" as="image" href="images/signature-yagiz-edirne.png" />
+</head>
+<body>
+
+  <nav>
+    <span class="nav-word" id="nav-left"><img class="sig-img" src="images/signature-ata.png" width="291" height="179" alt="Ata"></span>
+
+    <a class="nav-home" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/>
+        <polyline points="9 21 9 12 15 12 15 21"/>
+      </svg>
+      <span class="nav-home-label">Take me home</span>
+    </a>
+
+    <span class="nav-word" id="nav-right"><img class="sig-img" src="images/signature-yagiz-edirne.png" width="1022" height="179" alt="Yağız Edirne"></span>
+
+    <div class="nav-links">
+      <a href="index.html#projects">Works</a>
+      <a href="contact.html">Contact</a>
+      <a href="cv.html" class="active">CV</a>
+    </div>
+  </nav>
+
+  <div class="cv-embed-wrap" id="cv-wrap">
+    <embed src="cv.pdf#zoom=page-fit" type="application/pdf" />
+  </div>
+
+  <a class="cv-download" href="cv.pdf" download="Ata_Yagiz_Edirne_CV.pdf">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><polyline points="7 10 12 15 17 10"/><path d="M4 20h16"/></svg>
+    Download CV
+  </a>
+
+  <div class="cv-zoom" id="cv-zoom" hidden>
+    <button class="cv-zoom-btn" id="zoom-out" aria-label="Zoom out">&minus;</button>
+    <span class="cv-zoom-level" id="zoom-level">100%</span>
+    <button class="cv-zoom-btn" id="zoom-in" aria-label="Zoom in">+</button>
+    <button id="zoom-fit">Fit</button>
+  </div>
+
+  <script>
+  /* Download CV: save the file straight away instead of opening it in the browser */
+  (function () {
+    const btn = document.querySelector('.cv-download');
+    if (!btn) return;
+
+    function getBlob() {
+      return fetch('cv.pdf').then(function (r) {
+        if (!r.ok) throw new Error('fetch failed');
+        return r.blob();
+      }).catch(function () {
+        // opened from disk (file://): use the embedded copy
+        return new Promise(function (resolve, reject) {
+          function make() {
+            const bin = atob(window.CV_PDF_B64), data = new Uint8Array(bin.length);
+            for (let i = 0; i < bin.length; i++) data[i] = bin.charCodeAt(i);
+            resolve(new Blob([data], { type: 'application/pdf' }));
+          }
+          if (window.CV_PDF_B64) return make();
+          const sc = document.createElement('script');
+          sc.src = 'cv-data.js';
+          sc.onload = make;
+          sc.onerror = reject;
+          document.head.appendChild(sc);
+        });
+      });
+    }
+
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      getBlob().then(function (blob) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Ata_Yagiz_Edirne_CV.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+      }).catch(function () {
+        window.location.href = btn.href; // last resort
+      });
+    });
+  })();
+  </script>
+
+  <script src="vendor/pdf.min.js"></script>
+  <script>
+  /* Zoomable CV viewer; falls back to the browser's own PDF embed if pdf.js can't load */
+  (function () {
+    if (!window.pdfjsLib) return;
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'vendor/pdf.worker.min.js';
+
+    const wrap = document.getElementById('cv-wrap');
+    const controls = document.getElementById('cv-zoom');
+    const levelEl = document.getElementById('zoom-level');
+    const MIN = 0.3, MAX = 4;           // relative to "fit"
+
+    // fetch cv.pdf; if that is blocked (opened from disk, file://) use the embedded copy in cv-data.js
+    function loadPdf() {
+      return pdfjsLib.getDocument('cv.pdf').promise.catch(function () {
+        return new Promise(function (resolve, reject) {
+          const sc = document.createElement('script');
+          sc.src = 'cv-data.js';
+          sc.onload = function () {
+            const bin = atob(window.CV_PDF_B64), data = new Uint8Array(bin.length);
+            for (let i = 0; i < bin.length; i++) data[i] = bin.charCodeAt(i);
+            pdfjsLib.getDocument({ data: data }).promise.then(resolve, reject);
+          };
+          sc.onerror = reject;
+          document.head.appendChild(sc);
+        });
+      });
+    }
+
+    loadPdf().then(function (pdf) { return pdf.getPage(1); }).then(function (page) {
+      const base = page.getViewport({ scale: 1 });
+      const scroller = document.createElement('div');
+      scroller.className = 'cv-scroll';
+      const canvas = document.createElement('canvas');
+      scroller.appendChild(canvas);
+      wrap.innerHTML = '';
+      wrap.appendChild(scroller);
+      controls.hidden = false;
+
+      let zoom = 1, renderTask = null, timer = null;
+      const pad = 24;
+
+      function fitScale() {
+        return Math.min((scroller.clientWidth - pad * 2) / base.width, (scroller.clientHeight - pad * 2) / base.height);
+      }
+
+      function sizeCanvas() {
+        const css = fitScale() * zoom;
+        canvas.style.width  = base.width  * css + 'px';
+        canvas.style.height = base.height * css + 'px';
+        levelEl.textContent = Math.round(zoom * 100) + '%';
+      }
+
+      function render() {
+        const css = fitScale() * zoom;
+        const dpr = Math.min(window.devicePixelRatio || 1, 3);
+        const vp = page.getViewport({ scale: css * dpr });
+        const off = document.createElement('canvas');
+        off.width = Math.floor(vp.width); off.height = Math.floor(vp.height);
+        if (renderTask) renderTask.cancel();
+        renderTask = page.render({ canvasContext: off.getContext('2d'), viewport: vp });
+        renderTask.promise.then(function () {
+          canvas.width = off.width; canvas.height = off.height;
+          canvas.getContext('2d').drawImage(off, 0, 0);
+        }).catch(function () {});
+      }
+
+      function setZoom(z, cx, cy) {
+        z = Math.max(MIN, Math.min(MAX, z));
+        if (z === zoom) return;
+        const r = canvas.getBoundingClientRect(), s = scroller.getBoundingClientRect();
+        const px = cx == null ? s.left + s.width / 2 : cx;
+        const py = cy == null ? s.top + s.height / 2 : cy;
+        const fx = (px - r.left) / r.width, fy = (py - r.top) / r.height;
+        zoom = z;
+        sizeCanvas();
+        const n = canvas.getBoundingClientRect();
+        scroller.scrollLeft += n.left + fx * n.width - px;
+        scroller.scrollTop  += n.top  + fy * n.height - py;
+        clearTimeout(timer);
+        timer = setTimeout(render, 120);
+      }
+
+      sizeCanvas(); render();
+
+      document.getElementById('zoom-in').addEventListener('click', function () { setZoom(zoom * 1.25); });
+      document.getElementById('zoom-out').addEventListener('click', function () { setZoom(zoom / 1.25); });
+      document.getElementById('zoom-fit').addEventListener('click', function () { setZoom(1); scroller.scrollTo(0, 0); });
+
+      // pinch / ctrl+wheel zoom
+      scroller.addEventListener('wheel', function (e) {
+        if (!e.ctrlKey && !e.metaKey) return;
+        e.preventDefault();
+        setZoom(zoom * Math.exp(-e.deltaY * 0.01), e.clientX, e.clientY);
+      }, { passive: false });
+
+      // Safari trackpad pinch
+      let gz = 1;
+      scroller.addEventListener('gesturestart', function (e) { e.preventDefault(); gz = zoom; });
+      scroller.addEventListener('gesturechange', function (e) { e.preventDefault(); setZoom(gz * e.scale, e.clientX, e.clientY); });
+
+      window.addEventListener('keydown', function (e) {
+        if (e.metaKey || e.ctrlKey || e.altKey) return;
+        if (e.key === '+' || e.key === '=') setZoom(zoom * 1.25);
+        else if (e.key === '-') setZoom(zoom / 1.25);
+        else if (e.key === '0') { setZoom(1); scroller.scrollTo(0, 0); }
+      });
+
+      window.addEventListener('resize', function () { sizeCanvas(); clearTimeout(timer); timer = setTimeout(render, 120); });
+    }).catch(function () { /* keep the <embed> fallback */ });
+  })();
+  </script>
+
+  <script>
+  (function () {
+    const contactLink = document.querySelector('a[href="contact.html"]');
+
+    if (contactLink) {
+      
+      contactLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        const href = this.href;
+        const rightEl = document.getElementById('nav-right');
+        const leftEl  = document.getElementById('nav-left');
+        const rightRect = rightEl.getBoundingClientRect();
+        const leftRect  = leftEl.getBoundingClientRect();
+        const leftImg = leftEl.querySelector('img');
+        const sigH = leftImg ? leftImg.getBoundingClientRect().height : leftRect.height;
+        const ataRatio = (leftImg && leftImg.naturalWidth) ? leftImg.naturalWidth / leftImg.naturalHeight : 291 / 179;
+        // where the name sits on the contact page: after the "Ata" image plus the gap used there (0.25 × image height)
+        const targetLeft = leftRect.left + sigH * ataRatio + sigH * 0.25;
+        const targetTop  = leftRect.top;
+
+        const clone = rightEl.cloneNode(true);
+        clone.style.cssText = [
+          'position:fixed',
+          'top:' + rightRect.top + 'px',
+          'left:' + rightRect.left + 'px',
+          'margin:0',
+          'z-index:9999',
+          'pointer-events:none',
+          'transition:left 0.8s cubic-bezier(0.77,0,0.18,1), top 0.8s cubic-bezier(0.77,0,0.18,1)',
+          'font-family:var(--font-display)',
+          'font-weight:900',
+          'font-size:' + getComputedStyle(rightEl).fontSize,
+          'letter-spacing:' + getComputedStyle(rightEl).letterSpacing,
+          'text-transform:uppercase',
+          'line-height:1',
+          'white-space:nowrap'
+        ].join(';');
+        document.body.appendChild(clone);
+      clone.getBoundingClientRect(); // commit the start position so the transition always runs
+        rightEl.style.visibility = 'hidden';
+
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          clone.style.left = targetLeft + 'px';
+          clone.style.top  = targetTop  + 'px';
+        }));
+
+        setTimeout(() => { window.location.href = href; }, 780);
+      });
+    }
+  })();
+  </script>
+</body>
+</html>

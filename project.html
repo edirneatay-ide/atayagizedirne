@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project — Ata Yağız Edirne</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #000;
+      --white: #fff;
+      --font-display: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+      --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+      --gutter: 22px;
+      --sig-h: clamp(32px, 4.6vw, 58px);
+      --nav-height: calc(var(--gutter) * 2 + var(--sig-h)); /* same height as the other pages */
+    }
+
+    html, body {
+      background: var(--white);
+      color: var(--black);
+      font-family: var(--font-display);
+    }
+
+    /* Nav */
+    nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 200;
+      height: var(--nav-height);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: var(--gutter);
+      background: rgba(255,255,255,0.93);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .sig-img { display: block; height: var(--sig-h); width: auto; }
+
+    .nav-word {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(26px, 3.8vw, 56px);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      line-height: 1;
+      color: var(--black);
+      text-decoration: none;
+    }
+
+    /* Center home link */
+    .nav-home {
+      position: absolute;
+      left: 50%;
+      top: var(--gutter);
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 7px;
+      text-decoration: none;
+      white-space: nowrap;
+      height: clamp(26px, 3.8vw, 56px);
+    }
+
+    .nav-home svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      color: var(--black);
+    }
+
+    .nav-home-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--black);
+      opacity: 0.45;
+      transition: opacity 0.2s;
+    }
+    .nav-home:hover .nav-home-label { opacity: 1; }
+
+    /* Right side links */
+    .nav-links {
+      position: absolute;
+      top: var(--gutter);
+      right: var(--gutter);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 3px;
+      margin-top: clamp(52px, 7vw, 96px);
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--black);
+      text-decoration: none;
+      opacity: 0.45;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+    .nav-links a.active { opacity: 1; }
+
+    /* Project page */
+    main { padding-top: var(--nav-height); }
+
+    /* Project name (top left); hovering it opens a small menu with the other projects */
+    .project-switcher {
+      position: relative;
+      z-index: 50;
+      display: inline-block;
+      padding: 20px var(--gutter) 14px;
+      outline: none;
+    }
+
+    .project-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      opacity: 0.35;
+      transition: opacity 0.2s;
+      cursor: default;
+    }
+    .project-switcher:hover .project-label,
+    .project-switcher:focus-within .project-label { opacity: 1; }
+
+    .project-menu {
+      position: absolute;
+      top: 100%;
+      left: var(--gutter);
+      list-style: none;
+      padding: 4px 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-4px);
+      transition: opacity 0.18s, transform 0.18s, visibility 0.18s;
+    }
+    .project-switcher:hover .project-menu,
+    .project-switcher:focus-within .project-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .project-menu:empty { display: none; }
+
+    .project-menu a {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--black);
+      text-decoration: none;
+      white-space: nowrap;
+      opacity: 0.75;
+      transition: opacity 0.2s;
+    }
+    .project-menu a:hover,
+    .project-menu a:focus { opacity: 1; outline: none; }
+
+    /* Image grid: 4 columns of portrait tiles with an even gap */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 26px;
+      padding: 38px var(--gutter) 60px;
+    }
+
+    .project-tile {
+      aspect-ratio: 4 / 5;
+      background: #e8e8e8;
+      overflow: hidden;
+    }
+
+    /* Hover: the whole picture turns frosted, product info slides in from the sides */
+    .project-tile { position: relative; isolation: isolate; }
+    a.project-tile { display: block; color: inherit; text-decoration: none; cursor: pointer; }
+    .project-tile--info { outline: none; }
+
+    .tile-frost {
+      position: absolute;
+      inset: 0;
+      -webkit-backdrop-filter: blur(0px);
+      backdrop-filter: blur(0px);
+      transition: backdrop-filter 0.55s ease, -webkit-backdrop-filter 0.55s ease;
+      pointer-events: none;
+    }
+    /* picture is mostly dark → all-white text, mostly light → all-black text; a soft tint keeps it readable either way */
+    .project-tile--info { --txt: #fff; --tint: rgba(0, 0, 0, 0.3); }
+    .project-tile--info[data-tone="light"] { --txt: #000; --tint: rgba(255, 255, 255, 0.4); }
+    .tile-frost { background: rgba(0, 0, 0, 0); transition: backdrop-filter 0.55s ease, -webkit-backdrop-filter 0.55s ease, background 0.55s ease; }
+    .project-tile--info:hover .tile-frost,
+    .project-tile--info:focus-visible .tile-frost {
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+      background: var(--tint);
+    }
+
+    .tile-text {
+      position: absolute;
+      z-index: 2;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      line-height: 1.8;
+      color: var(--txt, #fff);   /* all black or all white, picked per picture (see script) */
+      opacity: 0;
+      transition: opacity 0.45s ease, transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
+      pointer-events: none;
+    }
+    .tile-name     { bottom: 16px; left: 14px;  transform: translateX(-28px); max-width: 48%; }
+    .tile-category { bottom: 16px; right: 14px; transform: translateX(28px); text-align: right; max-width: 40%; }
+    .tile-desc     { bottom: 16px; left: 14px;  transform: translateX(-28px); max-width: calc(100% - 28px); transition-delay: 0.08s; }
+
+    .project-tile--info:hover .tile-text,
+    .project-tile--info:focus-visible .tile-text { opacity: 1; transform: translateX(0); }
+
+    .project-tile img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @media (max-width: 900px) { .project-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 600px)  { .project-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; } }
+    @media (max-width: 560px)  { :root { --gutter: 14px; } }
+  
+    /* phones: the links move into the top bar (second row), the centre button is hidden (the Works link and back link do its job) */
+    @media (max-width: 600px) {
+      :root { --gutter: 14px; --nav-height: calc(var(--gutter) * 2 + var(--sig-h) + 24px); }
+      nav { flex-wrap: wrap; align-content: flex-start; }
+      .nav-home { display: none; }
+      .nav-links { position: static; width: 100%; margin: 10px 0 0; flex-direction: row; justify-content: flex-end; gap: 18px; }
+    }
+  </style>
+  <link rel="preload" as="image" href="images/signature-ata.png" />
+  <link rel="preload" as="image" href="images/signature-yagiz-edirne.png" />
+</head>
+<body>
+
+  <nav>
+    <span class="nav-word" id="nav-left"><img class="sig-img" src="images/signature-ata.png" width="291" height="179" alt="Ata"></span>
+
+    <a class="nav-home" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/>
+        <polyline points="9 21 9 12 15 12 15 21"/>
+      </svg>
+      <span class="nav-home-label">Take me home</span>
+    </a>
+
+    <span class="nav-word" id="nav-right"><img class="sig-img" src="images/signature-yagiz-edirne.png" width="1022" height="179" alt="Yağız Edirne"></span>
+
+    <div class="nav-links">
+      <a href="index.html#projects" class="active">Works</a>
+      <a href="contact.html">Contact</a>
+      <a href="cv.html">CV</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="project-switcher" tabindex="0">
+      <span class="project-label" id="project-label"></span>
+      <ul class="project-menu" id="project-menu"></ul>
+    </div>
+    <div class="project-grid" id="project-grid"></div>
+  </main>
+
+  <script src="config.js"></script>
+  <script>
+  (function () {
+    const idx = parseInt(new URLSearchParams(location.search).get('p'), 10);
+    const proj = CONFIG.projects[idx];
+    if (!proj) { location.replace('index.html#projects'); return; }
+
+    document.title = proj.title.replace(/\w\S*/g, function (w) { return w.charAt(0) + w.slice(1).toLowerCase(); }) + ' — Ata Yağız Edirne';
+    document.getElementById('project-label').textContent = '— ' + proj.title;
+
+    // small dropdown with the other projects
+    const menu = document.getElementById('project-menu');
+    CONFIG.projects.forEach(function (p, i) {
+      if (i === idx) return;
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = 'project.html?p=' + i;
+      a.textContent = p.title;
+      li.appendChild(a);
+      menu.appendChild(li);
+    });
+
+    const grid = document.getElementById('project-grid');
+    const MIN_TILES = 12; // grey placeholders fill the grid until there are real pictures
+    const items = (proj.gallery || []).slice();
+    while (items.length < MIN_TILES || items.length % 4) items.push({}); // fill the last row too
+    items.forEach(function (item, n) {
+      // every real entry is a link to its own page; the padding placeholders are plain boxes
+      const isEntry = !!(item.image || item.label);
+      const tile = document.createElement(isEntry ? 'a' : 'div');
+      tile.className = 'project-tile';
+      if (isEntry) {
+        tile.href = 'work.html?p=' + idx + '&i=' + n;
+        tile.setAttribute('aria-label', item.label || proj.title);
+      }
+      if (item.image) {
+        const img = document.createElement('img');
+        img.src = item.image;
+        img.alt = item.label || proj.title;
+        if (item.position) img.style.objectPosition = item.position; // which part of a wide picture stays in the tile
+        if (item.zoom && item.zoom > 1) { // closer in: scale up around a point of the tile
+          img.style.transform = 'scale(' + item.zoom + ')';
+          img.style.transformOrigin = item.origin || '50% 50%';
+        }
+        img.loading = 'lazy';
+        tile.appendChild(img);
+
+        // text colour for the hover: look at the part of the picture that is visible in the tile
+        // and use black on a light picture, white on a dark one (white if the picture can't be read)
+        const pickTone = function () {
+          try {
+            const iw = img.naturalWidth, ih = img.naturalHeight;
+            if (!iw || !ih) return;
+            const ta = (tile.clientWidth || 4) / (tile.clientHeight || 5);
+            const pos = (item.position || '50% 50%').split(/\s+/).map(function (v) { return parseFloat(v) / 100; });
+            const px = isNaN(pos[0]) ? 0.5 : pos[0], py = isNaN(pos[1]) ? 0.5 : pos[1];
+            let cw = iw, ch = ih;
+            if (iw / ih > ta) cw = ih * ta; else ch = iw / ta;
+            let sx = (iw - cw) * px, sy = (ih - ch) * py;
+            if (item.zoom && item.zoom > 1) {
+              const o = (item.origin || '50% 50%').split(/\s+/).map(function (v) { return parseFloat(v) / 100; });
+              const ox = isNaN(o[0]) ? 0.5 : o[0], oy = isNaN(o[1]) ? 0.5 : o[1], z = item.zoom;
+              sx += cw * ox * (1 - 1 / z); sy += ch * oy * (1 - 1 / z);
+              cw /= z; ch /= z;
+            }
+            const cv = document.createElement('canvas');
+            cv.width = cv.height = 24;
+            const cx = cv.getContext('2d', { willReadFrequently: true });
+            cx.drawImage(img, sx, sy, cw, ch, 0, 0, 24, 24);
+            const d = cx.getImageData(0, 0, 24, 24).data;
+            let sum = 0;
+            for (let k = 0; k < d.length; k += 4) sum += 0.2126 * d[k] + 0.7152 * d[k + 1] + 0.0722 * d[k + 2];
+            tile.dataset.tone = (sum / (d.length / 4)) / 255 > 0.58 ? 'light' : 'dark';
+          } catch (e) { /* stays white */ }
+        };
+        if (img.complete) pickTone(); else img.addEventListener('load', pickTone);
+
+        // frosted lower part + product info (name, category, explanation) on hover
+        tile.classList.add('project-tile--info');
+        const frost = document.createElement('div');
+        frost.className = 'tile-frost';
+        tile.appendChild(frost);
+        [['tile-name', item.label], ['tile-category', item.category]].forEach(function (pair) {
+          if (!pair[1]) return;
+          const t = document.createElement('div');
+          t.className = 'tile-text ' + pair[0];
+          t.textContent = pair[1];
+          tile.appendChild(t);
+        });
+      }
+      grid.appendChild(tile);
+    });
+  })();
+  </script>
+
+  <script>
+  (function () {
+    const contactLink = document.querySelector('a[href="contact.html"]');
+
+    if (contactLink) {
+      
+      contactLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        const href = this.href;
+        const rightEl = document.getElementById('nav-right');
+        const leftEl  = document.getElementById('nav-left');
+        const rightRect = rightEl.getBoundingClientRect();
+        const leftRect  = leftEl.getBoundingClientRect();
+        const leftImg = leftEl.querySelector('img');
+        const sigH = leftImg ? leftImg.getBoundingClientRect().height : leftRect.height;
+        const ataRatio = (leftImg && leftImg.naturalWidth) ? leftImg.naturalWidth / leftImg.naturalHeight : 291 / 179;
+        // where the name sits on the contact page: after the "Ata" image plus the gap used there (0.25 × image height)
+        const targetLeft = leftRect.left + sigH * ataRatio + sigH * 0.25;
+        const targetTop  = leftRect.top;
+
+        const clone = rightEl.cloneNode(true);
+        clone.style.cssText = [
+          'position:fixed',
+          'top:' + rightRect.top + 'px',
+          'left:' + rightRect.left + 'px',
+          'margin:0',
+          'z-index:9999',
+          'pointer-events:none',
+          'transition:left 0.8s cubic-bezier(0.77,0,0.18,1), top 0.8s cubic-bezier(0.77,0,0.18,1)',
+          'font-family:var(--font-display)',
+          'font-weight:900',
+          'font-size:' + getComputedStyle(rightEl).fontSize,
+          'letter-spacing:' + getComputedStyle(rightEl).letterSpacing,
+          'text-transform:uppercase',
+          'line-height:1',
+          'white-space:nowrap'
+        ].join(';');
+        document.body.appendChild(clone);
+      clone.getBoundingClientRect(); // commit the start position so the transition always runs
+        rightEl.style.visibility = 'hidden';
+
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          clone.style.left = targetLeft + 'px';
+          clone.style.top  = targetTop  + 'px';
+        }));
+
+        setTimeout(() => { window.location.href = href; }, 780);
+      });
+    }
+  })();
+  </script>
+</body>
+</html>

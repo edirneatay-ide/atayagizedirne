@@ -1,0 +1,413 @@
+/* ─── Reset & Base ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black: #000;
+  --white: #fff;
+  --font-display: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+  --gutter: 22px;
+  --sig-h: clamp(32px, 4.6vw, 58px);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--font-display);
+  overflow-x: hidden;
+}
+
+img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* ─── Navigation ─── */
+nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 200;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: var(--gutter);
+  pointer-events: none;
+  transition: background 0.3s;
+}
+
+.sig-img {
+  display: block;
+  height: var(--sig-h);
+  width: auto;
+}
+
+.nav-word {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(26px, 3.8vw, 56px);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+  pointer-events: auto;
+  mix-blend-mode: multiply;
+}
+
+/* Nav links — small text below right name */
+.nav-links {
+  position: absolute;
+  top: var(--gutter);
+  right: var(--gutter);
+  margin-top: clamp(52px, 7vw, 96px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  pointer-events: auto;
+}
+
+.nav-links a {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--black);
+  opacity: 0.45;
+  transition: opacity 0.2s;
+}
+.nav-links a:hover { opacity: 1; }
+
+/* Section links bar — sits just above the project list */
+.section-links {
+  display: flex;
+  gap: 32px;
+  padding: 18px var(--gutter) 10px;
+  border-bottom: 1px solid var(--black);
+}
+
+.section-links a {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--black);
+  opacity: 0.4;
+  transition: opacity 0.2s;
+}
+.section-links a:hover { opacity: 1; }
+
+/* ─── Hero ─── */
+.hero {
+  position: relative;
+  height: 100vh;
+  min-height: 640px;
+  padding: var(--gutter);
+  padding-top: calc(var(--gutter) + clamp(28px, 4.2vw, 62px) + 10px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Intro text (same font as the navigation titles) */
+.hero-taglines {
+  position: relative;
+  z-index: 4;
+  margin-bottom: 4px;
+  max-width: min(720px, calc(100% - 80px));
+  /* drop the text so the top of the first line is level with the top of "PROJECTS" in the nav */
+  top: calc(clamp(52px, 7vw, 96px) + 2.97px - clamp(28px, 4.2vw, 62px) - 10px - 6.77px);
+}
+
+.hero-tagline {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.9;
+}
+.hero-tagline + .hero-tagline { margin-top: 1.1em; }
+
+/* Big headlines above image */
+.hero-headlines-above {
+  position: relative;
+  z-index: 4;
+}
+
+.hero-hl {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(56px, 9.5vw, 148px);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  line-height: 0.9;
+  white-space: nowrap;
+}
+
+/* Hero image: absolutely fills lower ~65% of hero */
+.hero-image-wrap {
+  position: absolute;
+  top: 30%;
+  left: 8%;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* no picture yet: plain black block */
+.hero-image-wrap { background: var(--black); }
+
+.hero-image-wrap img,
+.hero-image-wrap video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 62%;
+}
+
+.hero-image-wrap video { object-position: center; }
+
+/* Credits: hidden when image already contains credit text */
+.hero-credits {
+  display: none;
+}
+
+/* Ghost headline overlapping image top edge */
+.hero-headlines-over {
+  position: relative;
+  z-index: 2;
+  margin-top: -0.55em;
+  pointer-events: none;
+}
+
+.hero-hl-ghost {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(40px, 7vw, 110px);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 0.9;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(0,0,0,0.2);
+  white-space: nowrap;
+}
+
+/* SAUVAGES stamp */
+.hero-stamp {
+  position: absolute;
+  bottom: 0;
+  left: var(--gutter);
+  z-index: 5;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(72px, 12vw, 190px);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 0.85;
+  color: var(--white);
+  -webkit-text-stroke: 0px;
+  mix-blend-mode: difference;
+}
+
+/* ─── Projects: sketchbook spread, "WORKS" sits in its centre oval ─── */
+.projects {
+  padding: 150px var(--gutter) 40px;
+  scroll-margin-top: 80px;
+  display: flex;
+  justify-content: center;
+}
+
+.book {
+  position: relative;
+  width: min(100%, 640px);
+  aspect-ratio: 1720 / 1265;
+  container-type: inline-size;   /* lets the headline scale with the picture */
+}
+
+.book img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: multiply;   /* the photo's white merges into the page */
+}
+
+/* the link covers the oval drawn in the middle of the book */
+.book-link {
+  position: absolute;
+  left: 37.97%;
+  top: 40.32%;
+  width: 26.28%;
+  height: 15.81%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--black);
+  text-decoration: none;
+  transition: background 0.12s, color 0.12s;
+}
+
+.book-link:hover { background: var(--black); color: var(--white); }
+
+.book-link span {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2.8cqw;
+  letter-spacing: 0.1em;
+  text-indent: 0.1em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+/* ─── About ─── */
+.about {
+  /* top/bottom padding tuned so the label and the picture sit equally far from the lines above and below */
+  padding: 96px var(--gutter) 99px;
+  scroll-margin-top: 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+}
+
+.about-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  opacity: 0.35;
+  margin-bottom: 20px;
+}
+
+.about-left { container-type: inline-size; }
+
+.about-figure {
+  /* box centred between the left edge of the page and the contact details in the right column */
+  /* left edge lines up with the left edge of the video above (the hero picture starts 8% in from the left) */
+  --ml: max(0px, calc(8vw - var(--gutter)));
+  position: relative;
+  width: min(100cqw, 420px);
+  margin-left: var(--ml);
+  aspect-ratio: 4 / 5;
+}
+
+.about-photo {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--black);
+  overflow: hidden;
+}
+
+.about-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0;   /* keep the top (his head) when the box is a little wider than the picture */
+  transform: scale(1.3);   /* closer in, anchored on the left: the right side of the picture is cropped */
+  transform-origin: 0% 0%;
+}
+
+/* poem: starts left of the picture and runs across it */
+.about { position: relative; }
+
+.about-poem {
+  position: absolute;
+  left: calc(var(--gutter) + 42px);
+  top: 0;
+  z-index: 2;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.9;
+  white-space: nowrap;
+  color: var(--white);
+  mix-blend-mode: difference;
+  pointer-events: none;
+}
+.about-poem-author { display: block; margin-top: 1.1em; }
+
+.about-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.about-credits-block {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 2;
+  letter-spacing: 0.07em;
+  opacity: 0.55;
+}
+
+.about-credits-block p {
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+}
+.about-credits-block p:last-child { border-bottom: none; }
+
+/* ─── Footer ─── */
+footer {
+  padding: var(--gutter);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 1px solid var(--black);
+}
+
+.footer-name {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(36px, 7.5vw, 118px);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 0.92;
+}
+
+.footer-meta {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.35;
+  text-align: right;
+  line-height: 2;
+}
+
+/* ─── Scroll fade-in ─── */
+.fade-in {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* ─── Responsive ─── */
+@media (max-width: 860px) {
+  .hero-image-wrap { left: 0; top: 38%; }
+  .about { grid-template-columns: 1fr; gap: 36px; padding: 60px var(--gutter) 51px; }
+  .about-figure { --ml: 0px; }
+}
+
+@media (max-width: 560px) {
+  :root { --gutter: 14px; }
+  .hero-hl, .hero-hl-ghost { font-size: 16vw; white-space: normal; }
+  .hero-stamp { font-size: 20vw; }
+}
+
+/* phones: nav links sit in a second row inside the top bar; the intro text starts below it */
+@media (max-width: 560px) {
+  nav { flex-wrap: wrap; align-content: flex-start; }
+  .nav-links { position: static; width: 100%; margin: 10px 0 0; flex-direction: row; justify-content: flex-end; gap: 18px; }
+  .hero { padding-top: calc(var(--gutter) * 2 + var(--sig-h) + 24px + 8px); }
+  .hero-taglines { top: 0; max-width: 100%; }
+  .projects { padding: 70px var(--gutter) 30px; }
+  .book-link span { font-size: 4.4cqw; }
+}
