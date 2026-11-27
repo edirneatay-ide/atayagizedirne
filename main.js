@@ -88,29 +88,14 @@
   if (C.projects[0]) document.getElementById("book-link-title").textContent = C.projects[0].title;
 
   /* ── ABOUT ── */
-  // poem next to the picture: white text blended with "difference", so it reads black on the white page
-  // and flips light wherever it crosses a dark part of the picture
+  // poem in the top right corner of the picture, in black on the empty wall
   if (C.about.quote) {
     const q = C.about.quote;
     const esc = (t) => t.replace(/&/g, "&amp;").replace(/</g, "&lt;");
     const bq = document.createElement("blockquote");
     bq.className = "about-poem";
     bq.innerHTML = '"' + q.lines.map(esc).join("<br>") + '"' + (q.author ? '<span class="about-poem-author">— ' + esc(q.author) + "</span>" : "");
-    const aboutSection = document.getElementById("about");
-    aboutSection.appendChild(bq);
-
-    // vertical position: a fixed share of the way down the picture
-    const placePoem = () => {
-      const fig = document.getElementById("about-figure");
-      const left = fig.closest(".about-left");
-      const ty = new DOMMatrix(getComputedStyle(left).transform).m42; // ignore the fade-in offset
-      const fr = fig.getBoundingClientRect(), sr = aboutSection.getBoundingClientRect();
-      bq.style.top = (fr.top - sr.top - ty + 0.64 * fr.height) + "px";
-    };
-    placePoem();
-    document.fonts.ready.then(placePoem);
-    window.addEventListener("load", placePoem);
-    window.addEventListener("resize", placePoem);
+    document.getElementById("about-figure").appendChild(bq);
   }
 
   // black placeholder until a picture is set in config.js (about.image)
